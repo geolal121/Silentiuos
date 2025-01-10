@@ -10,7 +10,7 @@ def start_client():
         print(f"[Server]: Connected to server at {server_host}:{server_port}")
 
         # Authenticate with the server
-        client_passcode = input("[Client]: Enter the passcode to connect to  the server: ").strup()
+        client_passcode = input("[Client]: Enter the passcode to connect to  the server: ").strip()
         client_socket.send(client_passcode.encode('utf-8'))
         print("[Client]: Authentication request sent to the server. Waiting for response...")
 
