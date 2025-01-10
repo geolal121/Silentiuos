@@ -31,6 +31,9 @@ def handle_client(client_socket, client_address, all_clients):
             encrypted_data = encrypted_message[16:]
 
             try:
+                # Display the encrypted message to the server user
+                print(f"[Server]: Encrypted message from client: {encrypted_message.hex()}")
+
                 # Decrypt received message with client's passcode
                 sender_message_passcode = input("[Server]: Enter client's message passcode to decrypt: ").strip()
                 if not authenticate_message(sender_message_passcode):
@@ -44,7 +47,7 @@ def handle_client(client_socket, client_address, all_clients):
                 response_message = input("[Server]: Enter response to client: ")
                 encrypted_response = encrypt_message(response_message, SERVER_MESSAGE_PASSCODE)
                 client_socket.send(encrypted_response)
-                print(f"[Server]: Encrypted response sent to {client_address}.")
+                print(f"[Server]: Encrypted response sent to {client_address}. (Encrypted: {encrypted_response.hex()})")
 
             except Exception as e:
                 print(f"[Server]: Error during message handling: {e}")
