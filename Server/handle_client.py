@@ -4,7 +4,7 @@ from CryptoOperations.decryption import decrypt_message
 
 SERVER_MESSAGE_PASSCODE = "mymessagepasscode"
 
-def handle_client(client_socket, client_address, all_clients):
+def handle_client(client_socket, client_address, all_clients, inactivity_monitor):
     try:
         print(f"[Server]: Waiting for client {client_address} to authenticate.")
         client_passcode = client_socket.recv(1024).decode('utf-8')
@@ -23,7 +23,8 @@ def handle_client(client_socket, client_address, all_clients):
 
         while True:
             encrypted_message = client_socket.recv(4096)
-            if not encrypted_message:
+            inactivity_monitor.update_activity()  # Reset inactivity timer
+            if not encrypted_message or encrypted_message == b"exit":
                 print(f"[Server]: Client {client_address} disconnected.")
                 break
 

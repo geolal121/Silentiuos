@@ -3,14 +3,17 @@ from CryptoOperations.encryption import encrypt_message
 from CryptoOperations.decryption import decrypt_message
 import base64
 
-def handle_server(server_socket):
+def handle_server(server_socket, inactivity_monitor):
     try:
-        # Step 1: Communication loop
         while True:
+            # Reset the inactivity timer
+            inactivity_monitor.update_activity()
+
             # Send a message to the server
             message = input("[Client]: Enter your message (or type 'exit' to quit): ")
             if message.lower() == 'exit':
                 print("[Client]: Exiting chat...")
+                server_socket.send(b"exit")  # Notify the server about the exit
                 break
 
             # Encrypt the message and send it
